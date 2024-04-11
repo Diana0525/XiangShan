@@ -27,6 +27,7 @@ import utility._
 trait HasPrefetchParameters extends HasXSParameter {
   val bopParams = p(BOPParamsKey)
   val streamParams = p(StreamParamsKey)
+  val acdpParams = p(ACDPParamsKey)
 }
 
 
