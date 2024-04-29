@@ -91,7 +91,7 @@ trait HasICacheParameters extends HasL1CacheParameters with HasInstrMMIOConst wi
 
   def PortNumber = 2
 
-  def partWayNum = 2
+  def partWayNum = 4
   def pWay = nWays/partWayNum
 
   def enableICachePrefetch      = cacheParams.enableICachePrefetch
@@ -482,7 +482,7 @@ class ICacheDataArray(implicit p: Parameters) extends ICacheArray
 
 class ICacheIO(implicit p: Parameters) extends ICacheBundle
 {
-  val hartId = Input(UInt(8.W))
+  val hartId = Input(UInt(hartIdLen.W))
   val prefetch    = Flipped(new FtqPrefechBundle)
   val stop        = Input(Bool())
   val fetch       = new ICacheMainPipeBundle

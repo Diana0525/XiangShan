@@ -16,8 +16,8 @@
 
 package xiangshan
 
-import chisel3._
 import org.chipsalliance.cde.config.{Config, Parameters}
+import chisel3._
 import chisel3.util.{Valid, ValidIO}
 import freechips.rocketchip.diplomacy._
 import freechips.rocketchip.interrupts._
@@ -33,8 +33,8 @@ class XSTile()(implicit p: Parameters) extends LazyModule
   with HasSoCParameter
 {
   override def shouldBeInlined: Boolean = false
-  private val core = LazyModule(new XSCore())
-  private val l2top = LazyModule(new L2Top())
+  val core = LazyModule(new XSCore())
+  val l2top = LazyModule(new L2Top())
 
   // =========== Public Ports ============
   val core_l3_pf_port = core.memBlock.l3_pf_sender_opt
@@ -73,7 +73,7 @@ class XSTile()(implicit p: Parameters) extends LazyModule
       })
     case None =>
   }
-  
+
   val core_l3_tpmeta_source_port = l2cache match {
     case Some(l2) => l2.tpmeta_source_node
     case None => None
@@ -90,7 +90,7 @@ class XSTile()(implicit p: Parameters) extends LazyModule
   // =========== IO Connection ============
   class XSTileImp(wrapper: LazyModule) extends LazyModuleImp(wrapper) {
     val io = IO(new Bundle {
-      val hartId = Input(UInt(64.W))
+      val hartId = Input(UInt(hartIdLen.W))
       val reset_vector = Input(UInt(PAddrBits.W))
       val cpu_halt = Output(Bool())
       val debugTopDown = new Bundle {
@@ -132,6 +132,8 @@ class XSTile()(implicit p: Parameters) extends LazyModule
       core.module.io.l2PfqBusy := false.B
       core.module.io.debugTopDown.l2MissMatch := l2top.module.debugTopDown.l2MissMatch
       l2top.module.debugTopDown.robHeadPaddr := core.module.io.debugTopDown.robHeadPaddr
+      l2top.module.debugTopDown.robTrueCommit := core.module.io.debugTopDown.robTrueCommit
+      core.module.io.l2_tlb_req <> l2top.module.l2_tlb_req
     } else {
       
       l2top.module.beu_errors.l2 <> 0.U.asTypeOf(l2top.module.beu_errors.l2)
@@ -141,6 +143,11 @@ class XSTile()(implicit p: Parameters) extends LazyModule
 
       core.module.io.l2PfqBusy := false.B
       core.module.io.debugTopDown.l2MissMatch := false.B
+
+      core.module.io.l2_tlb_req.req.valid := false.B
+      core.module.io.l2_tlb_req.req.bits := DontCare
+      core.module.io.l2_tlb_req.req_kill := DontCare
+      core.module.io.l2_tlb_req.resp.ready := true.B
     }
 
     io.debugTopDown.robHeadPaddr := core.module.io.debugTopDown.robHeadPaddr
