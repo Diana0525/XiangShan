@@ -180,10 +180,13 @@ class MinimalConfig(n: Int = 1) extends Config(
           ways = 8,
           sets = 128,
           echoField = Seq(huancun.DirtyField()),
-          prefetch = None,
+          // prefetch = None,
+          prefetch = Some(coupledL2.prefetch.ACDPParameters()),
+          // prefetch = Some(coupledL2.prefetch.BOPParameters()),
           clientCaches = Seq(L1Param(
             "dcache",
-            isKeywordBitsOpt = p.dcacheParametersOpt.get.isKeywordBitsOpt
+            isKeywordBitsOpt = p.dcacheParametersOpt.get.isKeywordBitsOpt,
+            vaddrBitsOpt = Some(p.VAddrBits - log2Up(p.dcacheParametersOpt.get.blockBytes)),
           )),
           )
         ),
