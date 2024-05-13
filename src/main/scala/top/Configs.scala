@@ -182,7 +182,6 @@ class MinimalConfig(n: Int = 1) extends Config(
           echoField = Seq(huancun.DirtyField()),
           // prefetch = None,
           prefetch = Some(coupledL2.prefetch.ACDPParameters()),
-          // prefetch = Some(coupledL2.prefetch.BOPParameters()),
           clientCaches = Seq(L1Param(
             "dcache",
             isKeywordBitsOpt = p.dcacheParametersOpt.get.isKeywordBitsOpt,
