@@ -10,15 +10,18 @@
 [submodule "huancun"]
 	path = huancun
 	url = https://github.com/Diana0525/huancun.git
+	branch = acdp
 [submodule "fudian"]
 	path = fudian
 	url = https://github.com/Diana0525/fudian.git
 [submodule "utility"]
 	path = utility
 	url = https://github.com/Diana0525/utility
+	path = acdp
 [submodule "yunsuan"]
 	path = yunsuan
 	url = https://github.com/OpenXiangShan/YunSuan.git
 [submodule "coupledL2"]
 	path = coupledL2
-	url = https://github.com/Diana0525/CoupledL2.git
+	url = https://github.com/Diana0525/coupledL2
+	branch = acdp
