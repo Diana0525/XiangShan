@@ -181,13 +181,7 @@ class MinimalConfig(n: Int = 1) extends Config(
           ways = 8,
           sets = 128,
           echoField = Seq(huancun.DirtyField()),
-          // prefetch = None,
-          prefetch = Some(coupledL2.prefetch.ACDPParameters()),
-          clientCaches = Seq(L1Param(
-            "dcache",
-            isKeywordBitsOpt = p.dcacheParametersOpt.get.isKeywordBitsOpt,
-            vaddrBitsOpt = Some(p.VAddrBits - log2Up(p.dcacheParametersOpt.get.blockBytes)),
-          )),
+          prefetch = None,
         )),
         L2NBanks = 2,
         prefetcher = None // if L2 pf_recv_node does not exist, disable SMS prefetcher
